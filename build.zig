@@ -8,12 +8,12 @@ pub fn build(b: *Builder) void {
 
     const bpf = std.build.Pkg{
         .name = "bpf",
-        .path = "libs/bpf/exports.zig",
+        .path = .{ .path = "libs/bpf/exports.zig" },
     };
 
     const obj = b.addObject("probe", "src/probe.zig");
     obj.setTarget(std.zig.CrossTarget{
-        .cpu_arch = switch ((target.cpu_arch orelse builtin.arch).endian()) {
+        .cpu_arch = switch ((target.cpu_arch orelse builtin.cpu.arch).endian()) {
             .Big => .bpfeb,
             .Little => .bpfel,
         },
